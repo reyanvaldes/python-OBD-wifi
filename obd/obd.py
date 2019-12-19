@@ -49,7 +49,7 @@ class OBD(object):
         with it's assorted commands/sensors.
     """
 
-    def __init__(self, portstr=None, baudrate=None, protocol=None, fast=True,
+    def __init__(self, addr=None, port=None, protocol=None, fast=True,
                  timeout=0.1, check_voltage=True, start_low_power=False):
         self.interface = None
         self.supported_commands = set(commands.base_commands())
@@ -60,37 +60,30 @@ class OBD(object):
         self.__frame_counts = {}  # keeps track of the number of return frames for each command
 
         logger.info("======================= python-OBD (v%s) =======================" % __version__)
-        self.__connect(portstr, baudrate, protocol,
+        self.__connect(addr, port, protocol,
                        check_voltage, start_low_power)  # initialize by connecting and loading sensors
         self.__load_commands()  # try to load the car's supported commands
         logger.info("===================================================================")
 
-    def __connect(self, portstr, baudrate, protocol, check_voltage,
+    def __connect(self, addr, port, protocol, check_voltage,
                   start_low_power):
         """
             Attempts to instantiate an ELM327 connection object.
         """
 
-        if portstr is None:
-            logger.info("Using scan_serial to select port")
-            port_names = scan_serial()
-            logger.info("Available ports: " + str(port_names))
+        if addr is None:
+            logger.info("Using standard IP address")
+            addr = "192.168.0.10"
+            port = 35000
 
-            if not port_names:
-                logger.warning("No OBD-II adapters found")
-                return
+            logger.info("Attempting to use port: " + str(port))
+            self.interface = ELM327(addr, port, protocol,
+                                    self.timeout, check_voltage,
+                                    start_low_power)
 
-            for port in port_names:
-                logger.info("Attempting to use port: " + str(port))
-                self.interface = ELM327(port, baudrate, protocol,
-                                        self.timeout, check_voltage,
-                                        start_low_power)
-
-                if self.interface.status() >= OBDStatus.ELM_CONNECTED:
-                    break  # success! stop searching for serial
         else:
             logger.info("Explicit port defined")
-            self.interface = ELM327(portstr, baudrate, protocol,
+            self.interface = ELM327(addr, port, protocol,
                                     self.timeout, check_voltage,
                                     start_low_power)
 
