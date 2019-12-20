@@ -13,7 +13,7 @@ Basic Usage
 ```Python
 import obd
 
-connection = obd.OBD() # auto-connects to USB or RF port
+connection = obd.OBD("192.168.0.10", 35000) # connect to specific OBD-II-wifi Adapter. In our case it is a Panda by comma.ai
 
 cmd = obd.commands.SPEED # select an OBD command (sensor)
 

@@ -9,7 +9,7 @@ with open("README.md", "r") as readme:
 setup(
     name="obd",
     version="0.7.1",
-    description=("Serial module for handling live sensor data from a vehicle's OBD-II port"),
+    description=("Serial module for handling live sensor data from a vehicle's OBD-II port over wifi suited for a Panda Adapater"),
     long_description=long_description,
     long_description_content_type="text/markdown",
     classifiers=[
@@ -22,10 +22,10 @@ setup(
         "Topic :: System :: Logging",
         "Intended Audience :: Developers",
     ],
-    keywords="obd obdii obd-ii obd2 car serial vehicle diagnostic",
-    author="Brendan Whitfield",
-    author_email="brendanw@windworksdesign.com",
-    url="http://github.com/brendan-w/python-OBD",
+    keywords="obd obdii obd-ii obd2 car serial vehicle diagnostic panda commaai",
+    author="Anon Mall",
+    author_email="anon.mall@gt-arc.com",
+    url="https://github.com/dailab/python-OBD-wifi",
     license="GNU GPLv2",
     packages=find_packages(),
     include_package_data=True,
