@@ -164,20 +164,21 @@ class ELM327:
         self.__status = OBDStatus.ELM_CONNECTED
 
         # -------------------------- AT RV (read volt) ------------------------
-        if check_voltage:
-            r = self.__send(b"AT RV")
-            if not r or len(r) != 1 or r[0] == '':
-                self.__error("No answer from 'AT RV'")
-                return
-            try:
-                if float(r[0].lower().replace('v', '')) < 6:
-                    logger.error("OBD2 socket disconnected")
-                    return
-            except ValueError as e:
-                self.__error("Incorrect response from 'AT RV'")
-                return
+        #if check_voltage:
+        #    r = self.__send(b"AT RV")
+        #    if not r or len(r) != 1 or r[0] == '':
+        #        self.__error("No answer from 'AT RV'")
+        #        return
+        #    try:
+        #        if float(r[0].lower().replace('v', '')) < 6:
+        #            logger.error("OBD2 socket disconnected")
+        #            return
+        #    except ValueError as e:
+        #        self.__error("Incorrect response from 'AT RV'")
+        #        return
             # by now, we've successfuly connected to the OBD socket
-            self.__status = OBDStatus.OBD_CONNECTED
+        #    self.__status = OBDStatus.OBD_CONNECTED
+        self.__status = OBDStatus.OBD_CONNECTED
 
         # try to communicate with the car, and load the correct protocol parser
         if self.set_protocol(protocol):
@@ -229,7 +230,7 @@ class ELM327:
         """
 
         # -------------- try the ELM's auto protocol mode --------------
-        r = self.__send(b"ATSP0")
+        #r = self.__send(b"ATSP0")
 
         # -------------- 0100 (first command, SEARCH protocols) --------------
         r0100 = self.__send(b"0100")
@@ -466,7 +467,7 @@ class ELM327:
             # retrieve as much data as possible
             try:
                 #data = self.__port.read(self.__port.in_waiting or 1)
-                data = self.__port.recv(16)
+                data = self.__port.recv(32)
             except Exception:
                 self.__status = OBDStatus.NOT_CONNECTED
                 self.__port.close()
