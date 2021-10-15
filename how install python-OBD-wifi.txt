@@ -1,0 +1,2 @@
+cd python-OBD-wifi
+python setup.py install
